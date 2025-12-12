@@ -1,93 +1,145 @@
 Ethical Hacking Lab – Nmap & Scapy Exercises
 
-This repository contains my reproduced labs from the Cisco Ethical Hacker course.
-The goal was to practice network scanning, host discovery, OS fingerprinting, service enumeration, packet sniffing, and basic protocol analysis using Nmap and Scapy.
+This repository contains the reproduced practical labs from the Cisco Ethical Hacker training (ParoCyber).
+The objective of this assignment was to practice network scanning, enumeration, packet capturing, packet sniffing, and protocol analysis using Nmap, tcpdump, Wireshark, and Scapy.
 
-🔍 Nmap Exercises
-1. Host Discovery
+🔹 1. Nmap Labs
+1.1 Host Discovery
 nmap -sn 10.6.6.0/24
 
-2. OS Detection
+1.2 OS Detection
 sudo nmap -O 10.6.6.23
 
-3. Service & Aggressive Scan
+1.3 Service Detection + Aggressive Scan
 nmap -p21 -sV -A -T4 10.6.6.23
 
-4. SMB Port Check
+1.4 SMB Port Scan
 nmap -A p139, p445 10.6.6.23
 
-5. SMB Enumeration Script
+1.5 SMB Enumeration Script
 nmap --script smb-enum-shares.nse -p445 10.6.6.23
 
-6. SMB Share Access
+1.6 Accessing SMB Share
 smbclient //10.6.6.23/print$ -N
-# type 'exit' to close
+# type: exit
 
-📡 Network Information Checks
+🔹 2. Network Information Commands
 ifconfig
 ip route
 cat /etc/resolv.conf
 
-🧪 Capturing Traffic with tcpdump
+🔹 3. Traffic Capture (tcpdump)
 sudo tcpdump -i eth0 -s 0 -w ladies.pcap
-# Ctrl + C to stop
+# Stop with CTRL + C
+
+
+Verify the capture file:
+
 ls ladies.pcap
 
-Open the capture in Wireshark:
+
+Open in Wireshark:
+
 wireshark
 
-🐍 Scapy Exercises
-1. Start Scapy as Root
+🔹 4. Scapy Labs
+4.1 Start Scapy as Root
 sudo su
 scapy
 
-2. Basic Sniffing
+4.2 Basic Sniffing
+
+In Scapy:
+
 sniff()
 
 
-Open a new terminal and run:
+In a new terminal, generate traffic:
 
 ping google.com
 
 
-Stop both with Ctrl + C.
+Stop both terminals: CTRL + C.
 
-3. Save Sniff Output
+Save results:
+
 paro = _
 paro.summary()
 
-4. Sniff on Internal Interface
+4.3 Sniff on Internal Interface
 sniff(iface="br-internal")
 
 
-Trigger traffic:
+Generate traffic:
+
+Ping:
 
 ping 10.6.6.1/24
-Open browser → visit 10.6.6.23
 
 
-Stop sniffing: Ctrl + C
+Open browser and visit:
+
+10.6.6.23
+
+
+Stop with CTRL + C.
+
+Save results:
 
 paro2 = _
 paro2.summary()
 
-5. ICMP Filtered Sniff
+4.4 Filtered ICMP Sniff
 sniff(iface="br-internal", filter="icmp", count=5)
 
 
-Trigger traffic:
+Generate ICMP packets:
 
 ping 10.6.6.23
 
 
-Stop:
-
-Ctrl + C on ping window
-
-Ctrl + C on Scapy window
-
+Stop both terminals (Ctrl+C).
 Save results:
 
 paro3 = _
 paro3.summary()
 paro3[3]
+
+🔹 5. Key Learning Outcomes
+
+Through these labs, I practiced and reinforced:
+
+Host discovery and active network scanning
+
+OS fingerprinting and service enumeration
+
+SMB scanning and share enumeration
+
+Packet capturing with tcpdump
+
+Protocol analysis in Wireshark
+
+Sniffing and analyzing packets using Scapy
+
+Understanding ICMP, TCP, ARP, and HTTP traffic patterns
+
+The difference between automated discovery (Nmap) and manual packet work (Scapy)
+
+🔹 6. Tools Used
+
+Nmap
+
+Scapy
+
+tcpdump
+
+Wireshark
+
+Kali Linux / Lab Environment
+
+🔹 7. Author
+
+Maria Sagwa
+Cisco Ethical Hacker Student – ParoCyber
+GitHub: https://github.com/SagwaM/Nmap-Scapy_Exercise-
+Medium: your profile link
