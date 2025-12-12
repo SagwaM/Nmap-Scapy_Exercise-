@@ -1,145 +1,183 @@
-Ethical Hacking Lab – Nmap & Scapy Exercises
+# 🔐 Ethical Hacking Lab – Nmap & Scapy Exercises
 
-This repository contains the reproduced practical labs from the Cisco Ethical Hacker training (ParoCyber).
-The objective of this assignment was to practice network scanning, enumeration, packet capturing, packet sniffing, and protocol analysis using Nmap, tcpdump, Wireshark, and Scapy.
+A practical cybersecurity lab documenting host discovery, OS detection, service enumeration, SMB scanning, packet capturing, and protocol analysis performed during the Cisco Ethical Hacker Course (ParoCyber).
+This project demonstrates foundational skills in network reconnaissance, packet crafting, and traffic analysis.
 
-🔹 1. Nmap Labs
-1.1 Host Discovery
-nmap -sn 10.6.6.0/24
+# 🚀 Lab Objectives
 
-1.2 OS Detection
-sudo nmap -O 10.6.6.23
+## The goal of this assignment is to:
 
-1.3 Service Detection + Aggressive Scan
-nmap -p21 -sV -A -T4 10.6.6.23
+- Reproduce all Nmap labs covered in class
+- Recreate all Scapy exercises
+- Capture and analyze traffic using tcpdump & Wireshark
+- Document commands, screenshots, and results
+- Build a clean, professional cybersecurity repo
 
-1.4 SMB Port Scan
-nmap -A p139, p445 10.6.6.23
+# 🛠️ Tools Used
 
-1.5 SMB Enumeration Script
-nmap --script smb-enum-shares.nse -p445 10.6.6.23
+- Nmap – Network scanning & enumeration
+- Scapy – Packet crafting & sniffing
+- tcpdump – Command-line packet capture
+- Wireshark – Deep packet analysis
+- Kali Linux – Attack & analysis environment
 
-1.6 Accessing SMB Share
-smbclient //10.6.6.23/print$ -N
-# type: exit
+# 🔍 1. Nmap Labs
+## 🌐 1.1 Host Discovery Scan
 
-🔹 2. Network Information Commands
-ifconfig
-ip route
-cat /etc/resolv.conf
+Used to identify active hosts on the network.
 
-🔹 3. Traffic Capture (tcpdump)
-sudo tcpdump -i eth0 -s 0 -w ladies.pcap
-# Stop with CTRL + C
+`nmap -sn 10.6.6.0/24`
 
 
-Verify the capture file:
+Purpose: Performs a “ping scan” to find live hosts without port scanning.
 
-ls ladies.pcap
+## 🖥️ 1.2 OS Detection
+`sudo nmap -O 10.6.6.23`
 
+Purpose: Attempts to identify the operating system based on network responses.
+
+## 🔎 1.3 Service Detection + Aggressive Scan
+`nmap -p21 -sV -A -T4 10.6.6.23`
+
+Purpose:
+
+- -p21 → scan FTP port
+- -sV → detect versions
+- -A → OS detection, traceroute, scripts
+- -T4 → faster timing template
+
+## 📦 1.4 SMB Port Scan
+`nmap -A p139,p445 10.6.6.23`
+
+Purpose: Scans Windows SMB ports used for file sharing & authentication.
+
+## 📂 1.5 SMB Enumeration Script
+`nmap --script smb-enum-shares.nse -p445 10.6.6.23`
+
+Purpose: Enumerates SMB shared folders exposed on the target.
+
+## 🔐 1.6 Accessing SMB Share
+`smbclient //10.6.6.23/print$ -N`
+
+Purpose: Anonymous access to the SMB share.
+Type `exit` to close the SMB shell.
+
+# 🛰️ 2. Network Information Commands
+
+These commands verify interface configuration & routing.
+
+`ifconfig`
+
+`ip route`
+
+`cat /etc/resolv.conf`
+
+Purpose:
+
+- ifconfig → View interface details
+- ip route → Check routing table
+- resolv.conf → DNS information
+
+# 📡 3. Traffic Capture (tcpdump)
+
+Start capture:
+
+`sudo tcpdump -i eth0 -s 0 -w ladies.pcap`
+
+Stop: CTRL + C.
+
+Verify file:
+
+`ls ladies.pcap`
 
 Open in Wireshark:
 
-wireshark
+`wireshark`
 
-🔹 4. Scapy Labs
-4.1 Start Scapy as Root
-sudo su
-scapy
+# 🐍 4. Scapy Exercises
+## 🧪 4.1 Starting Scapy
+`sudo su`
 
-4.2 Basic Sniffing
+`scapy`
+
+## 📥 4.2 Basic Sniffing
 
 In Scapy:
 
-sniff()
-
-
-In a new terminal, generate traffic:
-
-ping google.com
-
-
-Stop both terminals: CTRL + C.
-
-Save results:
-
-paro = _
-paro.summary()
-
-4.3 Sniff on Internal Interface
-sniff(iface="br-internal")
-
+`sniff()`
 
 Generate traffic:
 
-Ping:
-
-ping 10.6.6.1/24
-
-
-Open browser and visit:
-
-10.6.6.23
-
+`ping google.com`
 
 Stop with CTRL + C.
 
-Save results:
+Store results:
+`paro = _`
 
-paro2 = _
-paro2.summary()
+`paro.summary()`
 
-4.4 Filtered ICMP Sniff
-sniff(iface="br-internal", filter="icmp", count=5)
+## 🌐 4.3 Sniffing on br-internal Interface
+`sniff(iface="br-internal")`
 
+Generate traffic:
+
+`ping 10.6.6.1/24`
+
+And browse:
+
+10.6.6.23
+
+Save:
+`paro2 = _`
+
+`paro2.summary()`
+
+## 🎯 4.4 ICMP-Only Sniff
+`sniff(iface="br-internal", filter="icmp", count=5)`
 
 Generate ICMP packets:
 
-ping 10.6.6.23
+`ping 10.6.6.23`
+Save & inspect:
 
+`paro3 = _`
 
-Stop both terminals (Ctrl+C).
-Save results:
+`paro3.summary()`
 
-paro3 = _
-paro3.summary()
-paro3[3]
+`paro3[3]`
 
-🔹 5. Key Learning Outcomes
+# 📘 What I Learned
 
-Through these labs, I practiced and reinforced:
+- How to identify hosts and open ports
+- How OS detection works using packet signatures
+- Service/version enumeration using Nmap
+- SMB enumeration and share discovery
+- Capturing packets with tcpdump
+- Analyzing ICMP, ARP, HTTP, and TCP behavior
+- Using Scapy for custom packet crafting & filtering
 
-Host discovery and active network scanning
+# 🧩 Challenges Encountered
 
-OS fingerprinting and service enumeration
+- Understanding differences between scan types
+- Interpreting OS detection accuracy
+- Managing Scapy sniffing sessions
+- Filtering the right packets in Wireshark
 
-SMB scanning and share enumeration
+# 🎯 Why This Matters in Real Cybersecurity
 
-Packet capturing with tcpdump
+These tools form the foundation of real-world penetration testing:
 
-Protocol analysis in Wireshark
+- Reconnaissance
+- Enumeration
+- Vulnerability identification
+- Traffic analysis
+- Incident investigation
+- Mastering them is essential for ethical hackers and SOC analysts.
 
-Sniffing and analyzing packets using Scapy
+# 📬 Contact
 
-Understanding ICMP, TCP, ARP, and HTTP traffic patterns
-
-The difference between automated discovery (Nmap) and manual packet work (Scapy)
-
-🔹 6. Tools Used
-
-Nmap
-
-Scapy
-
-tcpdump
-
-Wireshark
-
-Kali Linux / Lab Environment
-
-🔹 7. Author
-
-Maria Sagwa
-Cisco Ethical Hacker Student – ParoCyber
-GitHub: https://github.com/SagwaM/Nmap-Scapy_Exercise-
-Medium: your profile link
+For questions or collaboration:
+- 📧 Maria Sagwa
+- 🔗 GitHub: [repo](https://github.com/SagwaM/Nmap-Scapy_Exercise-)
+- 🔗 Medium: [profile](https://medium.com/@sagwamkaari/reproducing-ethical-hacking-labs-nmap-scapy-16bfec3a0820?postPublishedType=initial)
